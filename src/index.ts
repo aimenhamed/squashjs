@@ -46,6 +46,10 @@ class SquashServer {
       throw new Error("Server not started.");
     }
   }
+
+  use(handler: Middleware) {
+    this.ex.use(handler);
+  }
 }
 
 function setupExpress(): Express {
