@@ -50,6 +50,10 @@ class SquashServer {
       throw new Error("Server not started.");
     }
   }
+
+  use(handler: Middleware) {
+    this.ex.use(handler);
+  }
 }
 
 function setupExpress(): Express {
@@ -61,6 +65,12 @@ function setupExpress(): Express {
 function createApp({ port, components, middlewares }: AppOptions) {
   const ex = setupExpress();
 
+  if (middlewares) {
+    for (const middleware of middlewares) {
+      ex.use(middleware);
+    }
+  }
+
   for (const component of components) {
     ex.use(component.getPrefix(), component.getRouter());
   }
@@ -71,12 +81,6 @@ function createApp({ port, components, middlewares }: AppOptions) {
       errorMessage: "Not found",
     })
   );
-
-  if (middlewares) {
-    for (const middleware of middlewares) {
-      ex.use(middleware);
-    }
-  }
 
   return new SquashServer(port, ex);
 }
