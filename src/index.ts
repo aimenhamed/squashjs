@@ -33,6 +33,10 @@ class SquashServer {
     this.ex = ex;
   }
 
+  getExpress(): Express {
+    return this.ex;
+  }
+
   run() {
     this.server = this.ex.listen(this.port, () =>
       console.log("Listening on " + this.port + "...")
